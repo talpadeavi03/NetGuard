@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-} else {
-    println "WARNING: keystore.properties file not found. Using default debug signing config."
-}
+//#def keystorePropertiesFile = rootProject.file("keystore.properties")
+//#def keystoreProperties = new Properties()
+//#if (keystorePropertiesFile.exists()) {
+   // #keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//#} else {
+  // # println "WARNING: keystore.properties file not found. Using default debug signing config."
+//#}
 
 
 android {
@@ -42,15 +42,15 @@ android {
     }
     signingConfigs {
     debug {
-        if (keystorePropertiesFile.exists()) {
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-        } else {
+        //#if (keystorePropertiesFile.exists()) {
+          //  #storeFile file(keystoreProperties['storeFile'])
+           // #storePassword keystoreProperties['storePassword']
+           // #keyAlias keystoreProperties['keyAlias']
+            //#keyPassword keystoreProperties['keyPassword']
+        //#} else {
             // Use default debug signing config provided by Android SDK
-            println "Using default debug signing config."
-        }
+           //# println "Using default debug signing config."
+        //#}
     }
 }
 
