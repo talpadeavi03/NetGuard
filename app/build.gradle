@@ -2,7 +2,12 @@ apply plugin: 'com.android.application'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    println "WARNING: keystore.properties file not found. Using default debug signing config."
+}
+
 
 android {
     compileSdkVersion = 35
@@ -36,13 +41,18 @@ android {
         }
     }
     signingConfigs {
-        release {
+    debug {
+        if (keystorePropertiesFile.exists()) {
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
+        } else {
+            // Use default debug signing config provided by Android SDK
+            println "Using default debug signing config."
         }
     }
+}
 
 
     externalNativeBuild {
@@ -70,6 +80,7 @@ android {
         }
         debug {
             minifyEnabled = true
+            signingConfig signingConfigs.debug
             proguardFiles.add(file('proguard-rules.pro'))
             buildConfigField "boolean", "PLAY_STORE_RELEASE", "false"
             buildConfigField "String", "HOSTS_FILE_URI", "\"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts\""
